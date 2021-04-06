@@ -1,3 +1,6 @@
+using System;
+using System.ComponentModel.DataAnnotations;
+
 namespace gregslist.Models
 {
     public class House
@@ -11,10 +14,17 @@ namespace gregslist.Models
             Price = price;
         }
 
+        [Required]
         public string Address { get; set; }
+        [Required]
         public string Levels { get; set; }
+        [Required]
         public int Bedrooms { get; set; }
+        [Required]
         public int Bathrooms { get; set; }
+        [Required]
         public int Price { get; set; }
+        [Required]
+        public string Id { get; private set; } = Guid.NewGuid().ToString();
     }
 }
