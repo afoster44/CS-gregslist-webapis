@@ -14,6 +14,8 @@ namespace gregslist.Models
             Price = price;
         }
 
+        public House() { }
+
         [Required]
         public string Address { get; set; }
         [Required]

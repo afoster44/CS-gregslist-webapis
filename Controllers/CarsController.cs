@@ -1,6 +1,8 @@
 using System.Collections.Generic;
+using System.Linq;
 using gregslist.db;
 using gregslist.Models;
+using gregslist.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace gregslist.Controllers
@@ -9,12 +11,19 @@ namespace gregslist.Controllers
     [Route("api/[controller]")]
     public class CarsController : ControllerBase
     {
+        private readonly CarsService _service;
+
+        public CarsController(CarsService service)
+        {
+            _service = service;
+        }
+
         [HttpGet]
         public ActionResult<IEnumerable<Car>> Get()
         {
             try
             {
-                return Ok(FakeDb.Cars);
+                return Ok(_service.Get());
             }
             catch (System.Exception err)
             {
@@ -27,26 +36,21 @@ namespace gregslist.Controllers
         {
             try
             {
-                FakeDb.Cars.Add(newCar);
-                return Ok(newCar);
+                var car = _service.Create(newCar);
+                return Ok(car);
             }
             catch (System.Exception err)
             {
-                return BadRequest(err);
+                return BadRequest(err.Message);
             }
         }
 
         [HttpGet("{Id}")]
-        public ActionResult<Car> GetById(string Id)
+        public ActionResult<Car> Get(int Id)
         {
             try
             {
-                Car foundCar = FakeDb.Cars.Find(c => c.Id == Id);
-                if (foundCar == null)
-                {
-                    throw new System.Exception("Sorry but we can not find that car.");
-                }
-                return Ok(foundCar);
+                return Ok(_service.Get(Id));
             }
             catch (System.Exception err)
             {
@@ -55,12 +59,12 @@ namespace gregslist.Controllers
         }
 
         [HttpPut("{Id}")]
-        public ActionResult<Car> Edit(string Id, [FromBody] Car car)
+        public ActionResult<Car> Edit(int Id, [FromBody] Car car)
         {
             try
             {
-                Car foundCar = FakeDb.Cars.Find(c => c.Id == Id);
-                return Ok(foundCar = car);
+                car.Id = Id;
+                return Ok(_service.Edit(Id, car));
             }
             catch (System.Exception err)
             {
@@ -73,8 +77,7 @@ namespace gregslist.Controllers
         {
             try
             {
-                Car foundCar = FakeDb.Cars.Find(c => c.Id == Id);
-                return Ok(FakeDb.Cars.Remove(foundCar));
+                return Ok(_service);
             }
             catch (System.Exception err)
             {
