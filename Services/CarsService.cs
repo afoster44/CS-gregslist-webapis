@@ -45,5 +45,12 @@ namespace gregslist.Services
 
             return _repo.Edit(original);
         }
+
+        internal Car Delete(int id)
+        {
+            Car original = Get(id);
+            _repo.Delete(id);
+            return original;
+        }
     }
 }

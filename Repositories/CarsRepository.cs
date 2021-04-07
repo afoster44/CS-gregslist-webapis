@@ -53,5 +53,12 @@ namespace gregslist.Repositories
             SELECT * FROM cars WHERE id = @Id;";
             return _db.QueryFirstOrDefault<Car>(sql, original);
         }
+
+        internal void Delete(int id)
+        {
+            string sql = "DELETE FROM cars WHERE id = @id;";
+            _db.Execute(sql, new { id });
+            return;
+        }
     }
 }

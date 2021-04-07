@@ -27,7 +27,7 @@ namespace gregslist.Controllers
             }
             catch (System.Exception err)
             {
-                return BadRequest(err);
+                return BadRequest(err.Message);
             }
         }
 
@@ -54,7 +54,7 @@ namespace gregslist.Controllers
             }
             catch (System.Exception err)
             {
-                return BadRequest(err);
+                return BadRequest(err.Message);
             }
         }
 
@@ -68,20 +68,20 @@ namespace gregslist.Controllers
             }
             catch (System.Exception err)
             {
-                return BadRequest(err);
+                return BadRequest(err.Message);
             }
         }
 
         [HttpDelete("{Id}")]
-        public ActionResult<Car> Delete(string Id)
+        public ActionResult<Car> Delete(int Id)
         {
             try
             {
-                return Ok(_service);
+                return Ok(_service.Delete(Id));
             }
             catch (System.Exception err)
             {
-                return BadRequest(err);
+                return BadRequest(err.Message);
             }
         }
     }
